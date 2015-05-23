@@ -4,8 +4,8 @@ import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import demo.model.Reservation;
-import demo.model.ReservationRepository;
+import demo.model.Customer;
+import demo.model.CustomerRepository;
 import demo.service.Greeter;
 
 @Configuration
@@ -17,9 +17,11 @@ public class VaadinConfiguration {
     }
 
     @Bean
-    CommandLineRunner init(ReservationRepository rr){
+    CommandLineRunner init(CustomerRepository rr){
         return args ->
-            Arrays.asList("Richard,Nicolas,Alex,Holger".split(","))
-                .forEach( n -> rr.save(new Reservation(n)));
+            Arrays.asList("Nicolas,Frankel", "Josh,Long", "Richard,Warburton", "John,Davies")
+                .stream()
+                .map(n -> n.split(","))
+                .forEach(n -> rr.save(new Customer(n[0], n[1])));
     }
 }
