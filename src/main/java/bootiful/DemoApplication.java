@@ -11,6 +11,7 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -76,6 +77,7 @@ class CustomerView extends VerticalLayout
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         // the view is constructed in the init() method()
+        LogFactory.getLog(getClass()).info( "enter view");
     }
 
     @Override
