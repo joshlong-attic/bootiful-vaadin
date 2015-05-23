@@ -58,7 +58,6 @@ class CustomerUI extends UI {
         root.setSpacing(true);
         root.setExpandRatio(this.customerView, 1.0F);
         this.setContent(root);
-
     }
 }
 
@@ -80,28 +79,37 @@ class CustomerView extends VerticalLayout
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        Locale locale = getLocale();
+        Locale locale = Locale.getDefault();
 
         JPAContainer<Customer> customerJPAContainer = JPAContainerFactory.make(Customer.class, this.entityManager);
 
-        com.vaadin.ui.Table customerTable = new com.vaadin.ui.Table("The Customer Data", customerJPAContainer);
-        customerTable.setColumnHeader("firstName", this.messageSource.getMessage("first-name", new Object[0], locale));
-        customerTable.setColumnHeader("lastName", this.messageSource.getMessage("last-name", new Object[0], locale));
+        com.vaadin.ui.Table customerTable = new com.vaadin.ui.Table(
+                this.messageSource.getMessage("customer-table", new Object[0], locale),
+                customerJPAContainer);
 
-        Table.ColumnGenerator colGenerator = (table, itemId, propertyId) -> {
+        customerTable.setColumnHeader("id",
+                this.messageSource.getMessage("id-col", new Object[0], locale));
+
+        customerTable.setColumnHeader("firstName",
+                this.messageSource.getMessage("first-name-col", new Object[0], locale));
+
+        customerTable.setColumnHeader("lastName",
+                this.messageSource.getMessage("last-name-col", new Object[0], locale));
+
+        customerTable.addGeneratedColumn("hello", (Table.ColumnGenerator) (table, itemId, propertyId) -> {
 
             Item item = table.getItem(itemId);
             Long id = (Long) (item.getItemProperty("id")).getValue();
             String firstName = (String) (item.getItemProperty("firstName")).getValue();
 
-
-            Button button = new Button("Say Hello");
+            Button button = new Button(this.messageSource.getMessage("say-hello", new Object[0], locale));
             button.addClickListener(evt -> Notification.show(this.messageSource.getMessage(
-                    "hello", new Object[]{id, firstName}, locale)));
+                    "greeting", new Object[]{id, firstName}, locale)));
             return button;
 
-        };
-        customerTable.addGeneratedColumn("hello", colGenerator);
+        });
+        customerTable.setColumnHeader("id", this.messageSource.getMessage("id-col", new Object[0], locale));
+        customerTable.setColumnHeader("hello", this.messageSource.getMessage("hello-col", new Object[0], locale));
         customerTable.setVisibleColumns("id", "firstName", "lastName", "hello");
         this.addComponent(customerTable);
     }
