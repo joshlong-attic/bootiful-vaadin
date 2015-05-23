@@ -3,8 +3,6 @@ package demo.service;
 import org.springframework.stereotype.Service;
 import com.vaadin.spring.annotation.ViewScope;
 
-@Service
-@ViewScope
 public class ViewGreeter {
 
     public String sayHello() {
