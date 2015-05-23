@@ -66,6 +66,8 @@ class CustomerUI extends UI {
 class CustomerView extends VerticalLayout
         implements MessageSourceAware, View, InitializingBean {
 
+    private Locale locale = Locale.getDefault();
+
     private MessageSource messageSource;
 
     @PersistenceContext
@@ -79,7 +81,6 @@ class CustomerView extends VerticalLayout
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        Locale locale = Locale.getDefault();
 
         JPAContainer<Customer> customerJPAContainer = JPAContainerFactory.make(Customer.class, this.entityManager);
 
@@ -96,7 +97,7 @@ class CustomerView extends VerticalLayout
         customerTable.setColumnHeader("lastName",
                 this.messageSource.getMessage("last-name-col", new Object[0], locale));
 
-        customerTable.addGeneratedColumn("hello", (Table.ColumnGenerator) (table, itemId, propertyId) -> {
+        Table.ColumnGenerator columnGenerator = (table, itemId, propertyId) -> {
 
             Item item = table.getItem(itemId);
             Long id = (Long) (item.getItemProperty("id")).getValue();
@@ -107,7 +108,8 @@ class CustomerView extends VerticalLayout
                     "greeting", new Object[]{id, firstName}, locale)));
             return button;
 
-        });
+        };
+        customerTable.addGeneratedColumn("hello", columnGenerator);
         customerTable.setColumnHeader("id", this.messageSource.getMessage("id-col", new Object[0], locale));
         customerTable.setColumnHeader("hello", this.messageSource.getMessage("hello-col", new Object[0], locale));
         customerTable.setVisibleColumns("id", "firstName", "lastName", "hello");
