@@ -30,10 +30,8 @@ public class MyVaadinUI extends UI {
 
         final CssLayout navigationBar = new CssLayout();
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        navigationBar.addComponent(createNavigationButton("View Scoped View",
-                ViewScopedView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("UI Scoped View",
-                UIScopedView.VIEW_NAME));
+            UIScopedView.VIEW_NAME));
         root.addComponent(navigationBar);
 
         final Panel viewContainer = new Panel();

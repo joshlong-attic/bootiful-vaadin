@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-class Reservation {
+public class Reservation {
 
     Reservation() { // jpa
     }
